@@ -1,0 +1,31 @@
+RichLog {
+    dock: bottom;
+    layout: horizontal;
+    height: 30%;
+    width: 100%;
+    padding: 1;
+    border: solid white;
+    margin-bottom: 4;
+}
+
+Input {
+    dock: bottom;
+    margin-bottom: 1;
+}
+
+DiceButton{
+    width: 100;
+    margin-left:20;
+}
+
+Static{
+    margin-left:5;
+}
+
+Markdown{
+    margin-left:-1;
+}
+
+LineBreak{
+    margin-top:1;
+}

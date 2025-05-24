@@ -1,0 +1,9 @@
+RichLog {
+    dock: bottom;
+    layout: horizontal;
+    max-height: 30%;
+    min-width: 50;
+    min-height: 1;
+    padding: 1;
+    border: solid white;
+}
