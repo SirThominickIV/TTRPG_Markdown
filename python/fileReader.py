@@ -70,8 +70,12 @@ def ReadFromFile(filePath):
             for var in mdVars:
                 substring = substring.replace(var, mdVars[var])
 
+
             diceNotation = tryGet_FullDiceEquation(substring)
-            if(diceNotation != None):
+            if diceNotation == None:
+                diceNotation = tryGetConstantsInDiceNotation(substring)
+
+            if diceNotation != None:
 
                 # Convert raw, standalone operations to constants
                 # 8+4+3 => 15
