@@ -129,13 +129,32 @@ class SelfRollingDie():
         self.rearLabel = rawInfoSplit[1]
 
     def roll(self):
-        self.displayEquation = self.rollableEquation
+        self.cleanedEquation = self.rollableEquation
         for diceNotation in tryGet_xds_DiceNotation(self.rollableEquation):
             roll = dice.roll(diceNotation)
-            roll = str(roll)
-            self.displayEquation = self.displayEquation.replace(diceNotation, roll, 1)
+            roll.sort()
 
-        finalCalculation = self.displayEquation
+            highestLowest = tryGet_HighestLowest_DiceNotation(self.rollableEquation)
+
+            if highestLowest:
+
+                toPop = int(highestLowest[1:])
+
+                if highestLowest[0] == 'h':
+                    for x in range (1, toPop):
+                        roll.pop(0)
+
+                if highestLowest[0] == 'l':
+                    for x in range (1, toPop):
+                        roll.pop()
+
+
+            roll = str(roll)
+
+            self.cleanedEquation = self.cleanedEquation.replace(highestLowest, "")
+            self.cleanedEquation = self.cleanedEquation.replace(diceNotation, roll, 1)
+
+        finalCalculation = self.cleanedEquation
         finalCalculation = finalCalculation.replace('[', '')
         finalCalculation = finalCalculation.replace(']', '')
         finalCalculation = finalCalculation.replace(',', '+')
@@ -147,7 +166,7 @@ class SelfRollingDie():
         # Prepend the label only if there is one
         if(len(self.frontLabel) > 0):
             output += f"{self.frontLabel.strip()} "
-        output += f"{self.rollableEquation} => {self.displayEquation} = {dice.roll(finalCalculation)}{self.rearLabel}"
+        output += f"{self.rollableEquation} => {self.cleanedEquation} = {dice.roll(finalCalculation)}{self.rearLabel}"
 
         return output
 

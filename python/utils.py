@@ -56,6 +56,17 @@ def tryGet_xds_DiceNotation(string):
     match = re.findall('\d+d\d+', string)
     return match if match else None
 
+
+"""
+This selects the highest/lowest operator
+
+Example:
+ Greataxe          50d20[h11]+4+2    to hit     1d12+4 Slashing
+"""
+def tryGet_HighestLowest_DiceNotation(string):
+    match = re.search('(h|l)\d{1,}', string)
+    return match.group(0) if match else None
+
 """
 This selects the part you do math on, with
 
