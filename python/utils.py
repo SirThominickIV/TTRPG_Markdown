@@ -65,7 +65,7 @@ Example:
 """
 def tryGet_HighestLowest_DiceNotation(string):
     match = re.search('(h|l)\d{1,}', string)
-    return match.group(0) if match else None
+    return match.group(0) if match else ""
 
 """
 This selects the part you do math on, with

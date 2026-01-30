@@ -120,43 +120,47 @@ def GetDiceOutput(rollableEquation, frontLabel = "", rearLabel = ""):
     cleanedEquation = rollableEquation
     for diceNotation in tryGet_xds_DiceNotation(rollableEquation):
         roll = dice.roll(diceNotation)
-        roll.sort()
+        unsortedRoll = roll
+        unsortedRollOutput = ""
 
         highestLowest = tryGet_HighestLowest_DiceNotation(rollableEquation)
 
-        if highestLowest:
+        if len(highestLowest):
+
+            unsortedRollOutput = f"{unsortedRoll} => "
+            
+            roll.sort()
 
             toPop = len(roll) - int(highestLowest[1:])
 
             if highestLowest[0] == 'h':
-                for x in range (1, toPop):
+                for x in range (0, toPop):
                     roll.pop(0)
 
             if highestLowest[0] == 'l':
-                for x in range (1, toPop):
+                for x in range (0, toPop):
                     roll.pop()
-
 
         roll = str(roll)
 
         cleanedEquation = cleanedEquation.replace(highestLowest, "")
         cleanedEquation = cleanedEquation.replace(diceNotation, roll, 1)
 
-    finalCalculation = cleanedEquation
-    finalCalculation = finalCalculation.replace('[', '')
-    finalCalculation = finalCalculation.replace(']', '')
-    finalCalculation = finalCalculation.replace(',', '+')
-    finalCalculation = finalCalculation.replace(' ', '')
+        finalCalculation = cleanedEquation
+        finalCalculation = finalCalculation.replace('[', '')
+        finalCalculation = finalCalculation.replace(']', '')
+        finalCalculation = finalCalculation.replace(',', '+')
+        finalCalculation = finalCalculation.replace(' ', '')
 
-    # Combine everything for the output
-    output = ""
+        # Combine everything for the output
+        output = ""
 
-    # Prepend the label only if there is one
-    if(len(frontLabel) > 0):
-        output += f"{frontLabel.strip()} "
-    output += f"{rollableEquation} => {cleanedEquation} = {dice.roll(finalCalculation)}{rearLabel}"
+        # Prepend the label only if there is one
+        if(len(frontLabel) > 0):
+            output += f"{frontLabel.strip()} "
+        output += f"{rollableEquation} => {unsortedRollOutput}{cleanedEquation} = {dice.roll(finalCalculation)}{rearLabel}"
 
-    return output
+        return output
 
 
 class SelfRollingDie():
