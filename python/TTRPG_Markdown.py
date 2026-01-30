@@ -116,6 +116,49 @@ class SectionParser():
         
         return toYield
 
+def GetDiceOutput(rollableEquation, frontLabel = "", rearLabel = ""):
+    cleanedEquation = rollableEquation
+    for diceNotation in tryGet_xds_DiceNotation(rollableEquation):
+        roll = dice.roll(diceNotation)
+        roll.sort()
+
+        highestLowest = tryGet_HighestLowest_DiceNotation(rollableEquation)
+
+        if highestLowest:
+
+            toPop = len(roll) - int(highestLowest[1:])
+
+            if highestLowest[0] == 'h':
+                for x in range (1, toPop):
+                    roll.pop(0)
+
+            if highestLowest[0] == 'l':
+                for x in range (1, toPop):
+                    roll.pop()
+
+
+        roll = str(roll)
+
+        cleanedEquation = cleanedEquation.replace(highestLowest, "")
+        cleanedEquation = cleanedEquation.replace(diceNotation, roll, 1)
+
+    finalCalculation = cleanedEquation
+    finalCalculation = finalCalculation.replace('[', '')
+    finalCalculation = finalCalculation.replace(']', '')
+    finalCalculation = finalCalculation.replace(',', '+')
+    finalCalculation = finalCalculation.replace(' ', '')
+
+    # Combine everything for the output
+    output = ""
+
+    # Prepend the label only if there is one
+    if(len(frontLabel) > 0):
+        output += f"{frontLabel.strip()} "
+    output += f"{rollableEquation} => {cleanedEquation} = {dice.roll(finalCalculation)}{rearLabel}"
+
+    return output
+
+
 class SelfRollingDie():
     def __init__(self, rawInfo):
         # Grab the equation
@@ -129,46 +172,8 @@ class SelfRollingDie():
         self.rearLabel = rawInfoSplit[1]
 
     def roll(self):
-        self.cleanedEquation = self.rollableEquation
-        for diceNotation in tryGet_xds_DiceNotation(self.rollableEquation):
-            roll = dice.roll(diceNotation)
-            roll.sort()
+        return GetDiceOutput(self.rollableEquation, self.frontLabel, self.rearLabel)
 
-            highestLowest = tryGet_HighestLowest_DiceNotation(self.rollableEquation)
-
-            if highestLowest:
-
-                toPop = int(highestLowest[1:])
-
-                if highestLowest[0] == 'h':
-                    for x in range (1, toPop):
-                        roll.pop(0)
-
-                if highestLowest[0] == 'l':
-                    for x in range (1, toPop):
-                        roll.pop()
-
-
-            roll = str(roll)
-
-            self.cleanedEquation = self.cleanedEquation.replace(highestLowest, "")
-            self.cleanedEquation = self.cleanedEquation.replace(diceNotation, roll, 1)
-
-        finalCalculation = self.cleanedEquation
-        finalCalculation = finalCalculation.replace('[', '')
-        finalCalculation = finalCalculation.replace(']', '')
-        finalCalculation = finalCalculation.replace(',', '+')
-        finalCalculation = finalCalculation.replace(' ', '')
-
-        # Combine everything for the output
-        output = ""
-
-        # Prepend the label only if there is one
-        if(len(self.frontLabel) > 0):
-            output += f"{self.frontLabel.strip()} "
-        output += f"{self.rollableEquation} => {self.cleanedEquation} = {dice.roll(finalCalculation)}{self.rearLabel}"
-
-        return output
 
 class DiceButtonLine(Static):
 
@@ -278,9 +283,8 @@ class MarkdownApp(App):
             eq = event.value.strip()
             if(eq == '' and previousManualRole != None):
                 eq = previousManualRole
-
-            result = dice.roll(eq)
-            self.diceLog.write(f"{eq} => {result}")
+            
+            self.diceLog.write(GetDiceOutput(eq))
 
             previousManualRole = eq
 
