@@ -1,3 +1,5 @@
+cd ..
+
 if [ -d ".venv" ]; then
     echo "Virtual environment '.venv' already exists. Aborting."
     return 1
