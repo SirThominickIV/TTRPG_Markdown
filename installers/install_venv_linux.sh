@@ -5,7 +5,7 @@ if [ -d ".venv" ]; then
     return 1
 fi
 
-python3.8 -m venv ".venv"
+python3.14 -m venv ".venv"
 
 source "./.venv/bin/activate"
 pip install -U pip

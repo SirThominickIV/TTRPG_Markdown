@@ -19,7 +19,7 @@ This project supports:
 4. Double click `start.bat`
 
 ### Linux
-A script is provided to install python 3.8 as well as the required python virtual environment. You will want to install python 3.8 first, then the virtual environment.  
+A script is provided to install python 3.14 as well as the required python virtual environment. You will want to install python 3.14 first, then the virtual environment.  
 
 # Usage
 * Lines that include dice syntax will be converted to buttons: "[[1d20+5]]"
