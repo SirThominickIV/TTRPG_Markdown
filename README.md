@@ -11,10 +11,12 @@ This project supports:
 * Most markdown stylings
 
 # To install
-Python 3.8 is a requirement for this program.
 
 ### Windows
-Either a dedicated IDE for python can be used, or you can install python 3.8 directly and run the program.
+1. Open the project. The simplest way to do this is to do this is to find it in windows file explorer, then press `CTRL + SHIFT + Right click > Open Powershell Window here`
+2. Run the `python --version` command. Ensure you have the latest stable version, if you don't, you can run `python` to open the windows store and install python. 
+3. Create a virtual environment with `python -m venv .venv`
+4. Double click `start.bat`
 
 ### Linux
 A script is provided to install python 3.8 as well as the required python virtual environment. You will want to install python 3.8 first, then the virtual environment.  

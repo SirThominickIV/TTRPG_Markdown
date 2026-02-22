@@ -8,10 +8,11 @@ def GetAllCharacterSheetPaths():
 
     goodPaths = []
     for path in paths:
-        if("readme" in path.lower()):
-            continue
 
-        if("license" in path.lower()):
+        # Filter bad paths
+        p = path.lower()
+        list_of_substrings = ['readme', 'license', 'venv']
+        if any(sub in p for sub in list_of_substrings):
             continue
 
         goodPaths.append(path)
